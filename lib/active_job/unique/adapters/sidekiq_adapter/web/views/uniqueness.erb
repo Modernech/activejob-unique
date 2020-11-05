@@ -57,6 +57,7 @@
   <div class="table_container">
     <table class="table table-hover table-bordered table-striped table-white">
       <thead>
+        <th>#</th>
         <th>Job</th>
         <th>Queue</th>
         <th>Uniqueness Id</th>
@@ -64,11 +65,12 @@
         <th>Timestamp</th>
         <th class="text-center">Progress</th>
         <th class="text-center">Stage</th>
-        <th class="text-center active title"><%= @job_stats.size %></th>
+        <th class="text-center active title"><%= @job_stats.size + @begin_index %></th>
       </thead>
       <tbody>
-        <% @job_stats.each do |stats| %>
+        <% @job_stats.each_with_index do |stats, idx| %>
           <tr>
+            <td><%= @begin_index + idx + 1 %></td>
             <td>
               <a class="no-decoration" href="<%= "#{root_path}job_stats/uniqueness/#{stats[:job_name]}/*/*" %>"><%= stats[:job_name] %></a>
             </td>
@@ -78,7 +80,7 @@
             <td><%= stats[:uniqueness_id] %></td>
             <td><%= stats[:job_id] %></td>
             <td><%= (relative_time(stats[:timestamp]) rescue 'err')  %></td>
-            <td class="text-center class="<%= progress_label(stats[:progress_stage])%>" ">
+            <td class="text-center <%= progress_label(stats[:progress_stage]) %>">
               <%= stats[:progress_stage] %>
             </td>
             <td class="text-center">

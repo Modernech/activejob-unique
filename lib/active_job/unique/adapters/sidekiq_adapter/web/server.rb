@@ -67,7 +67,7 @@ module ActiveJob
                 @current_page = params[:page].to_i
                 @current_page = 1 if @current_page < 1
 
-                begin_index = (@current_page - 1) * @count
+                @begin_index = (@current_page - 1) * @count
                 next_page_availabe = false
 
                 next_page_availabe, @job_stats = WebApi.query_job_progress_stage_state_uniqueness(
@@ -75,7 +75,7 @@ module ActiveJob
                   @queue_name,
                   @stage,
                   @count,
-                  begin_index
+                  @begin_index
                 )
 
                 @total_size = @count * (@current_page - 1) + @job_stats.size
@@ -113,7 +113,7 @@ module ActiveJob
                 @current_page = params[:page].to_i
                 @current_page = 1 if @current_page < 1
 
-                begin_index = (@current_page - 1) * @count
+                @begin_index = (@current_page - 1) * @count
                 next_page_availabe = false
 
                 next_page_availabe, @job_stats = WebApi.query_job_progress_stage_state_processing(
@@ -121,7 +121,7 @@ module ActiveJob
                   @queue_name,
                   @uniqueness_id,
                   @count,
-                  begin_index
+                  @begin_index
                 )
 
                 @total_size = @count * (@current_page - 1) + @job_stats.size
@@ -163,7 +163,7 @@ module ActiveJob
                 @current_page = params[:page].to_i
                 @current_page = 1 if @current_page < 1
 
-                begin_index = (@current_page - 1) * @count
+                @begin_index = (@current_page - 1) * @count
                 next_page_availabe = false
 
                 next_page_availabe, @job_logs = WebApi.query_job_progress_stage_log_jobs(
@@ -172,10 +172,10 @@ module ActiveJob
                   @queue_name,
                   @uniqueness_id,
                   @count,
-                  begin_index
+                  @begin_index
                 )
 
-                @total_size = @count * (@current_page - 1) + @job_logs.size
+                @total_size = @count * (@current_page - 1) + @job_stats.size
                 @total_size += 1 if next_page_availabe
 
                 render(:erb, File.read(File.join(view_path, 'logs.erb')))

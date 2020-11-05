@@ -46,6 +46,7 @@
   <div class="table_container">
     <table class="table table-hover table-bordered table-striped table-white">
       <thead>
+        <th>#</th>
         <th>Job</th>
         <th>Queue</th>
         <th>Uniqueness Id</th>
@@ -54,8 +55,9 @@
         <th class="text-center active title"><%= @job_stats.size %></th>
       </thead>
       <tbody>
-        <% @job_stats.each do |stats| %>
+        <% @job_stats.each_with_index do |stats, idx| %>
           <tr>
+            <td><%= @begin_index + idx + 1 %></td>
             <td>
               <a class="no-decoration" href="<%= "#{root_path}job_stats/processing/#{stats[:job_name]}/*/*" %>"><%= stats[:job_name] %></a>
             </td>

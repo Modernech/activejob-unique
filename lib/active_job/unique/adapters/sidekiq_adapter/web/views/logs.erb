@@ -69,11 +69,11 @@
       </thead>
       <tbody>
         <%
-          @job_logs.each_with_index do |idx, log|
+          @job_logs.each_with_index do |log, idx|
             queue_name, uniqueness_id, job_id = log.to_s.split(':')
         %>
           <tr>
-            <td><%= @total_size - idx %></td>
+            <td><%= @begin_index + idx + 1 %></td>
             <td><%= @day %></td>
             <td><a class="no-decoration" href="<%= "#{root_path}job_stats/logs/#{@day}/#{@job_name}/*/*"%>"><%= @job_name %></a></td>
             <td><a class="no-decoration" href="<%= "#{root_path}job_stats/logs/#{@day}/#{@job_name}/#{queue_name}/*"%>"><%= queue_name %></a></td>
