@@ -31,23 +31,27 @@ module ActiveJob
                                         job_log_key,
                                         job_log_value)
               Sidekiq.redis_pool.with do |conn|
-                day_score = ensure_job_stage_log_day_base(day)
-
-                queue_id_score = incr_progress_stage_log_id_score(conn, job_score_key, 'queue', queue_name)
-                queue_id_score = ensure_job_stage_log_queue_id_base(queue_id_score)
-
-                uniqueness_id_score = incr_progress_stage_log_id_score(conn, job_score_key, 'uniqueness_id', uniqueness_id)
-                uniqueness_id_score = ensure_job_stage_log_uniqueness_id_base(uniqueness_id_score)
-
-                # time_score with timezone
-                now = Time.now.in_time_zone(ActiveJob::Unique::Stats.timezone)
-                time_score = ((now - now.to_date.in_time_zone(ActiveJob::Unique::Stats.timezone)) / 10).to_i
-
-                job_id_score = day_score + queue_id_score + uniqueness_id_score + time_score
                 job_id_value = "#{queue_name}:#{uniqueness_id}:#{job_id}"
+                job_id_score = conn.zscore(job_score_key, job_id_value).to_f
 
-                if conn.zadd(job_score_key, [job_id_score, job_id_value], gt: true) == 0
-                  job_id_score = conn.zscore(job_score_key, job_id_value).to_f
+                if job_id_score.zero?
+                  day_score = ensure_job_stage_log_day_base(day)
+
+                  queue_id_score = incr_progress_stage_log_id_score(conn, job_score_key, 'queue', queue_name)
+                  queue_id_score = ensure_job_stage_log_queue_id_base(queue_id_score)
+
+                  uniqueness_id_score = incr_progress_stage_log_id_score(conn, job_score_key, 'uniqueness_id', uniqueness_id)
+                  uniqueness_id_score = ensure_job_stage_log_uniqueness_id_base(uniqueness_id_score)
+
+                  # time_score with timezone
+                  now = Time.now.in_time_zone(ActiveJob::Unique::Stats.timezone)
+                  time_score = ((now - now.to_date.in_time_zone(ActiveJob::Unique::Stats.timezone)) / 10).to_i
+
+                  job_id_score = day_score + queue_id_score + uniqueness_id_score + time_score
+
+                  if conn.zadd(job_score_key, [job_id_score, job_id_value], nx: true) == 0
+                    job_id_score = conn.zscore(job_score_key, job_id_value).to_f
+                  end
                 end
 
                 job_log_score = job_id_score + progress_stage_score
