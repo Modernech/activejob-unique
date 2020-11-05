@@ -59,27 +59,26 @@
   <div class="table_container">
     <table class="table table-hover table-bordered table-striped table-white">
       <thead>
+        <th>#</th>
         <th>Day</th>
         <th>Job</th>
         <th>Queue</th>
         <th>Uniqueness Id</th>
         <th>Job Id</th>
-        <th>Score</th>
         <th class="text-center active title"><%= @job_logs.size %></th>
       </thead>
       <tbody>
         <%
-          @job_logs.each do |log|
+          @job_logs.each_with_index do |idx, log|
             queue_name, uniqueness_id, job_id = log.to_s.split(':')
-            real_job_id, job_score = job_id.to_s.split('_')
         %>
           <tr>
+            <td><%= @total_size - idx %></td>
             <td><%= @day %></td>
             <td><a class="no-decoration" href="<%= "#{root_path}job_stats/logs/#{@day}/#{@job_name}/*/*"%>"><%= @job_name %></a></td>
             <td><a class="no-decoration" href="<%= "#{root_path}job_stats/logs/#{@day}/#{@job_name}/#{queue_name}/*"%>"><%= queue_name %></a></td>
             <td><a class="no-decoration" href="<%= "#{root_path}job_stats/logs/#{@day}/#{@job_name}/#{queue_name}/#{uniqueness_id}"%>"><%= uniqueness_id %></a></td>
-            <td><a class="no-decoration" href="<%= "#{root_path}job_stats/logs/#{@day}/#{@job_name}/#{queue_name}/#{uniqueness_id}/#{job_id}"%>"><%= real_job_id %></a></td>
-            <td><%= job_score.to_s.split('-').join(':') %></td>
+            <td><a class="no-decoration" href="<%= "#{root_path}job_stats/logs/#{@day}/#{@job_name}/#{queue_name}/#{uniqueness_id}/#{job_id}"%>"><%= job_id %></a></td>
             <td class="text-center">
               <form action="<%= "#{root_path}job_stats/logs/#{@day}/#{@job_name}/#{queue_name}/#{uniqueness_id}/#{job_id}/delete"%>" method="post">
                 <%= csrf_tag if respond_to?(:csrf_tag) %>
