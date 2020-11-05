@@ -175,7 +175,7 @@ module ActiveJob
                   @begin_index
                 )
 
-                @total_size = @count * (@current_page - 1) + @job_stats.size
+                @total_size = @count * (@current_page - 1) + @job_logs.size
                 @total_size += 1 if next_page_availabe
 
                 render(:erb, File.read(File.join(view_path, 'logs.erb')))
