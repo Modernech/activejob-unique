@@ -52,7 +52,7 @@
         <th>Uniqueness Id</th>
         <th>Expires</th>
         <th class="text-center">Progress Stage</th>
-        <th class="text-center active title"><%= @job_stats.size %></th>
+        <th class="text-center title"><%= @job_stats.size + @begin_index %></th>
       </thead>
       <tbody>
         <% @job_stats.each_with_index do |stats, idx| %>

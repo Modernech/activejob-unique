@@ -25,11 +25,11 @@
   def progress_label(progress)
     case progress
     when 'enqueue_processed', 'perform_processed'
-      'success'
+      'text-success'
     when 'enqueue_skipped', 'perform_skipped'
-      'warning'
+      'text-warning'
     when 'enqueue_failed', 'perform_failed'
-      'danger'
+      'text-danger'
     end
   end
 %>
@@ -67,7 +67,7 @@
     </tr>
     <tr>
       <th>Arguments</th>
-      <td><pre class="title" style="margin:0;"><%= JSON.pretty_generate(@job_log[:args]) %></pre></td>
+      <td><code class="title" style="margin:0;"><%= JSON.pretty_generate(@job_log[:args]) %></code></td>
     </tr>
     <tr>
       <th>Uniqueness Id</th>

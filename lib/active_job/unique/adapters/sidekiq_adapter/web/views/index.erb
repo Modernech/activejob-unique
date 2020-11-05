@@ -59,18 +59,18 @@
 
     case progress
     when 'skipped'
-      'warning'
+      'text-warning'
     when 'failed'
-      'danger'
+      'text-danger'
     end
   end
 
   def percentage_label(value)
-    return 'success' if value >= 100
-    return 'info' if value >= 90
-    return 'warning' if value >= 80
+    return 'text-success' if value >= 100
+    return 'text-info' if value >= 90
+    return 'text-warning' if value >= 80
 
-    'danger'
+    'text-danger'
   end
 
   stages = ['processed', 'skipped', 'failed', 'attempted', 'processing']
@@ -190,7 +190,7 @@
                 total_n = total_enqueue[s].to_i
             %>
               <td class="<%= progress_label(s, today_n) %> text-center" title="<%= nice_number(today_n) %>"><small><%= short_number(today_n) %></small></td>
-              <td class="text-center text-<%= progress_label(s) %>" title="<%= nice_number(total_n) %>"><b><small><%= short_number(total_n) %></small></b></td>
+              <td class="text-center <%= progress_label(s) %>" title="<%= nice_number(total_n) %>"><b><small><%= short_number(total_n) %></small></b></td>
             <% end %>
           </tr>
           <tr>
@@ -237,7 +237,7 @@
                 total_n = total_perform[s].to_i
             %>
               <td class="<%= progress_label(s, today_n) %> text-center" title="<%= nice_number(today_n) %>"><small><%= short_number(today_n) %></small></td>
-              <td class="text-center text-<%= progress_label(s) %>" title="<%= nice_number(total_n) %>"><b><small><%= short_number(total_n) %></small></b></td>
+              <td class="text-center <%= progress_label(s) %>" title="<%= nice_number(total_n) %>"><b><small><%= short_number(total_n) %></small></b></td>
             <% end %>
           </tr>
 
@@ -288,7 +288,7 @@
                   total_n = total_enqueue[s].to_i
               %>
                 <td class="<%= progress_label(s, today_n) %> text-center" title="<%= nice_number(today_n) %>"><small><%= short_number(today_n) %></small></td>
-                <td class="text-center text-<%= progress_label(s) %>" title="<%= nice_number(total_n) %>"><b><small><%= short_number(total_n) %></small></b></td>
+                <td class="text-center <%= progress_label(s) %>" title="<%= nice_number(total_n) %>"><b><small><%= short_number(total_n) %></small></b></td>
               <% end %>
             </tr>
             <tr>
@@ -320,7 +320,7 @@
                   total_n = total_perform[s].to_i
               %>
                 <td class="<%= progress_label(s, today_n) %> text-center" title="<%= nice_number(today_n) %>"><small><%= short_number(today_n) %></small></td>
-                <td class="text-center text-<%= progress_label(s) %>" title="<%= nice_number(total_n) %>"><b><small><%= short_number(total_n) %></small></b></td>
+                <td class="text-center <%= progress_label(s) %>" title="<%= nice_number(total_n) %>"><b><small><%= short_number(total_n) %></small></b></td>
               <% end %>
             </tr>
           <% end %>

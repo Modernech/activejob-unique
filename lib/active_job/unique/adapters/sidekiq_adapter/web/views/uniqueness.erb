@@ -25,11 +25,11 @@
   def progress_label(progress)
     case progress
     when 'enqueue_processed', 'perform_processed'
-      'success'
+      'text-success'
     when 'enqueue_skipped', 'perform_skipped'
-      'warning'
+      'text-warning'
     when 'enqueue_failed', 'perform_failed'
-      'danger'
+      'text-danger'
     end
   end
 %>
@@ -65,7 +65,7 @@
         <th>Timestamp</th>
         <th class="text-center">Progress</th>
         <th class="text-center">Stage</th>
-        <th class="text-center active title"><%= @job_stats.size + @begin_index %></th>
+        <th class="text-center title"><%= @job_stats.size + @begin_index %></th>
       </thead>
       <tbody>
         <% @job_stats.each_with_index do |stats, idx| %>
